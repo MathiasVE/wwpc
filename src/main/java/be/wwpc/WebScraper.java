@@ -67,9 +67,9 @@ public class WebScraper {
 
                     String jrpgTitle = a.getText();
                     List<String> platforms = aList.stream().map(webElement -> webElement.getText()).collect(Collectors.toUnmodifiableList());
-                    //String mainProtagonistGender = GemeniRequestor.callGemini(jrpgTitle, releaseYear, platforms);
                     String mainProtagonistGender = "";
-                    jrpgsEntries.add(new JRPGEntry(jrpgTitle, releaseYear, platforms, mainProtagonistGender));
+                    String femaleCharactersSexualised = "";
+                    jrpgsEntries.add(new JRPGEntry(jrpgTitle, releaseYear, platforms, mainProtagonistGender, femaleCharactersSexualised));
                 }
                 loadedOffset = entries.size();
                 if(readEntriesOffset < entries.size()) {

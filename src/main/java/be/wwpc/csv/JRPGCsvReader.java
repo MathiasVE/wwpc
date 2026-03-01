@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,6 @@ public class JRPGCsvReader {
     private static JRPGEntry parseEntry(String[] nextRecord) {
         String[] split = nextRecord[2].split(";");
         ArrayList<String> platforms = new ArrayList<>(Arrays.asList(split));
-        return new JRPGEntry(nextRecord[0], Integer.parseInt(nextRecord[1]), platforms, nextRecord[3]);
+        return new JRPGEntry(nextRecord[0], Integer.parseInt(nextRecord[1]), platforms, nextRecord[3], nextRecord[4]);
     }
 }

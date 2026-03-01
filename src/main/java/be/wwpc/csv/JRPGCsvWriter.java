@@ -14,17 +14,19 @@ public class JRPGCsvWriter {
         try(FileWriter fileWriter = new FileWriter(csv.toFile());
             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
             csvWriter.writeNext(new String[] {
-                    "JRPG Name",
+                    "JRPG name",
                     "Release date",
                     "Platforms",
-                    "Main Protagonist Gender"
+                    "Main protagonist gender",
+                    "Female characters sexualised"
             });
             for(JRPGEntry entry : entries) {
                 csvWriter.writeNext(new String[] {
                         entry.name(),
                         "" + entry.releaseYear(),
-                        entry.platforms().stream().reduce("", (s, s2) -> s + ";" + s2),
-                        entry.mainProtagonistGender()
+                        entry.platforms().stream().reduce("", (s, s2) -> s.isBlank() ? s2 : s + ";" + s2),
+                        entry.mainProtagonistGender(),
+                        entry.femaleCharactersSexualised()
                 });
             }
         }

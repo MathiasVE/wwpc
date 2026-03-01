@@ -14,20 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeminiRequestor {
-    public static String callGemini(String jrpgName, int year, List<String> platforms) {
-        if(platforms.isEmpty()) {
-            return "not applicable";
-        }
+    public static String callGemini(String question) {
         try (Client client = new Client()) {
             GenerateContentResponse response = client.models.generateContent(
                     "gemini-3-flash-preview",
-                    "Is the main protagonist in " + jrpgName + " from " + year + " on " + platforms.get(0) + " male or female? answer only with \"male\", \"female\", \"player choice\" or \"not applicable\"",
+                    question,
                     null);
             return response.text();
         }
     }
 
-    static void main() {
+    public static String getGenderMainProtagonist(String jrpgName, int year, List<String> platforms) {
+        if(platforms.isEmpty()) {
+            return "not applicable";
+        }
+        return callGemini("Is the main protagonist in " + jrpgName + " from " + year + " on " + platforms.get(0) + " male or female? answer only with \"male\", \"female\", \"player choice\" or \"not applicable\"");
+    }
+
+    public static String getFemaleCharactersSexualised(String jrpgName, int year, List<String> platforms) {
+        if(platforms.isEmpty()) {
+            return "not applicable";
+        }
+        return callGemini("Are the female characters sexualised in " + jrpgName + " from " + year + " on " + platforms.get(0) + "? Answer only with \"yes\", \"no\" or \"unclear\". Don't provide an explanation.");
+    }
+
+    static void main() throws IOException {
         Path path =  Paths.get("jrpgs.csv");
         List<JRPGEntry> jrpgsEntries = new ArrayList<>();
         try {
@@ -36,19 +47,40 @@ public class GeminiRequestor {
             // ignore
         }
         try {
+            int callCount = 0;
             for(int i=0; i<jrpgsEntries.size(); i++) {
                 JRPGEntry entry = jrpgsEntries.get(i);
-                if(entry.mainProtagonistGender().equals("")) {
+                boolean calledGemini = false;
+                if(entry.mainProtagonistGender().isEmpty()) {
                     jrpgsEntries.set(i, new JRPGEntry(
-                        entry.name(),
-                        entry.releaseYear(),
-                        entry.platforms(),
-                        callGemini(entry.name(), entry.releaseYear(), entry.platforms())));
-                    JRPGCsvWriter.write(path, jrpgsEntries);
+                            entry.name(),
+                            entry.releaseYear(),
+                            entry.platforms(),
+                            getGenderMainProtagonist(entry.name(), entry.releaseYear(), entry.platforms()),
+                            entry.femaleCharactersSexualised()));
+                    System.out.println("Get gender main protagonist: " + i);
+                    calledGemini = true;
+                }
+                entry = jrpgsEntries.get(i);
+                if(entry.femaleCharactersSexualised().isEmpty()) {
+                    System.out.println("Get Female Characters Sexualised: " + i);
+                    jrpgsEntries.set(i, new JRPGEntry(
+                            entry.name(),
+                            entry.releaseYear(),
+                            entry.platforms(),
+                            entry.mainProtagonistGender(),
+                            getFemaleCharactersSexualised(entry.name(), entry.releaseYear(), entry.platforms())));
+                    calledGemini = true;
+                }
+                if(calledGemini) {
+                    callCount++;
+                    if(callCount % 100 == 0) {
+                        JRPGCsvWriter.write(path, jrpgsEntries);
+                    }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } finally {
+            JRPGCsvWriter.write(path, jrpgsEntries);
         }
     }
 
