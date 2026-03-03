@@ -1,3 +1,12 @@
+# Installation
+Install java JDK 25
+Install maven
+
+Make sure the new java JDK is in the PATH environment variable
+
+Alternatively you can install intelliJ and import the project there. 
+IntelliJ comes with java and maven build-in.
+
 # How to run
 ## Webscraper
 ~~~

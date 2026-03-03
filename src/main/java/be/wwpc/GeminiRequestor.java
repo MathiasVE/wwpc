@@ -52,24 +52,31 @@ public class GeminiRequestor {
                 JRPGEntry entry = jrpgsEntries.get(i);
                 boolean calledGemini = false;
                 if(entry.mainProtagonistGender().isEmpty()) {
+                    System.out.println("Get gender main protagonist: " + i);
                     jrpgsEntries.set(i, new JRPGEntry(
                             entry.name(),
                             entry.releaseYear(),
                             entry.platforms(),
                             getGenderMainProtagonist(entry.name(), entry.releaseYear(), entry.platforms()),
                             entry.femaleCharactersSexualised()));
-                    System.out.println("Get gender main protagonist: " + i);
                     calledGemini = true;
                 }
                 entry = jrpgsEntries.get(i);
                 if(entry.femaleCharactersSexualised().isEmpty()) {
                     System.out.println("Get Female Characters Sexualised: " + i);
+                    String femaleCharactersSexualised = getFemaleCharactersSexualised(entry.name(), entry.releaseYear(), entry.platforms());
+                    if(!(femaleCharactersSexualised.equalsIgnoreCase("yes") ||
+                            femaleCharactersSexualised.equalsIgnoreCase("no") ||
+                            femaleCharactersSexualised.equalsIgnoreCase("unclear"))) {
+                        System.out.println(entry.name() + ": " + femaleCharactersSexualised);
+                        femaleCharactersSexualised = "unclear";
+                    }
                     jrpgsEntries.set(i, new JRPGEntry(
                             entry.name(),
                             entry.releaseYear(),
                             entry.platforms(),
                             entry.mainProtagonistGender(),
-                            getFemaleCharactersSexualised(entry.name(), entry.releaseYear(), entry.platforms())));
+                            femaleCharactersSexualised));
                     calledGemini = true;
                 }
                 if(calledGemini) {
