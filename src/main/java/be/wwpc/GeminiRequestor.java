@@ -59,7 +59,8 @@ public class GeminiRequestor {
                             entry.platforms(),
                             getGenderMainProtagonist(entry.name(), entry.releaseYear(), entry.platforms()),
                             entry.femaleCharactersSexualised(),
-                            entry.userScore()));
+                            entry.userScore(),
+                            entry.selected()));
                     calledGemini = true;
                 }
                 entry = jrpgsEntries.get(i);
@@ -78,7 +79,8 @@ public class GeminiRequestor {
                             entry.platforms(),
                             entry.mainProtagonistGender(),
                             femaleCharactersSexualised,
-                            entry.userScore()));
+                            entry.userScore(),
+                            entry.selected()));
                     calledGemini = true;
                 }
                 if(calledGemini) {

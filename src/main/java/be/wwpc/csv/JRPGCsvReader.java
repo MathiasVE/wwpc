@@ -28,6 +28,12 @@ public class JRPGCsvReader {
     private static JRPGEntry parseEntry(String[] nextRecord) {
         String[] split = nextRecord[2].split(";");
         ArrayList<String> platforms = new ArrayList<>(Arrays.asList(split));
-        return new JRPGEntry(nextRecord[0], Integer.parseInt(nextRecord[1]), platforms, nextRecord[3], nextRecord[4], nextRecord.length > 5 ? nextRecord[5].isEmpty() ? null : Integer.valueOf(nextRecord[5]) : null);
+        return new JRPGEntry(nextRecord[0],
+                Integer.parseInt(nextRecord[1]),
+                platforms,
+                nextRecord[3],
+                nextRecord[4],
+                nextRecord.length > 5 ? nextRecord[5].isEmpty() ? null : Integer.valueOf(nextRecord[5]) : null,
+                nextRecord.length > 6 ? nextRecord[5].isEmpty() ? null : Integer.valueOf(nextRecord[6]) : null);
     }
 }

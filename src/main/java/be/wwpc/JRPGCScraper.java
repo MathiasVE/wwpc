@@ -68,7 +68,7 @@ public class JRPGCScraper {
                     List<String> platforms = aList.stream().map(webElement -> webElement.getText()).collect(Collectors.toUnmodifiableList());
                     String mainProtagonistGender = "";
                     String femaleCharactersSexualised = "";
-                    jrpgsEntries.add(new JRPGEntry(jrpgTitle, releaseYear, platforms, mainProtagonistGender, femaleCharactersSexualised, null));
+                    jrpgsEntries.add(new JRPGEntry(jrpgTitle, releaseYear, platforms, mainProtagonistGender, femaleCharactersSexualised, null, null));
                 }
                 loadedOffset = entries.size();
                 if(readEntriesOffset < entries.size()) {

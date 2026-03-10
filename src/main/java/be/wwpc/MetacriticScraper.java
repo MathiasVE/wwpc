@@ -123,7 +123,8 @@ public class MetacriticScraper {
                 jrpgEntry.platforms(),
                 jrpgEntry.mainProtagonistGender(),
                 jrpgEntry.femaleCharactersSexualised(),
-                userScore);
+                userScore,
+                jrpgEntry.selected());
     }
 
     private static @NonNull String getSimplifiedName(String name) {
