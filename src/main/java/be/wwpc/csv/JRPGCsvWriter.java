@@ -18,7 +18,8 @@ public class JRPGCsvWriter {
                     "Release date",
                     "Platforms",
                     "Main protagonist gender",
-                    "Female characters sexualised"
+                    "Female characters sexualised",
+                    "User score"
             });
             for(JRPGEntry entry : entries) {
                 csvWriter.writeNext(new String[] {
@@ -26,7 +27,8 @@ public class JRPGCsvWriter {
                         "" + entry.releaseYear(),
                         entry.platforms().stream().reduce("", (s, s2) -> s.isBlank() ? s2 : s + ";" + s2),
                         entry.mainProtagonistGender(),
-                        entry.femaleCharactersSexualised()
+                        entry.femaleCharactersSexualised(),
+                        entry.userScore() != null ? "" + entry.userScore() : ""
                 });
             }
         }

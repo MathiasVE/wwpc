@@ -11,7 +11,7 @@ IntelliJ comes with java and maven build-in.
 ## From commandline
 ### Webscraper
 ~~~
-mvn compile exec:java -Dexec.mainClass="be.wwpc.WebScraper"
+mvn compile exec:java -Dexec.mainClass="be.wwpc.JRPGCScraper"
 ~~~
 
 ### GeminiRequestor

@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -19,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WebScraper {
-    static void main() throws URISyntaxException {
+public class JRPGCScraper {
+    static void main() {
         Path path =  Paths.get("jrpgs.csv");
         List<JRPGEntry> jrpgsEntries = new ArrayList<>();
         try {
@@ -69,7 +68,7 @@ public class WebScraper {
                     List<String> platforms = aList.stream().map(webElement -> webElement.getText()).collect(Collectors.toUnmodifiableList());
                     String mainProtagonistGender = "";
                     String femaleCharactersSexualised = "";
-                    jrpgsEntries.add(new JRPGEntry(jrpgTitle, releaseYear, platforms, mainProtagonistGender, femaleCharactersSexualised));
+                    jrpgsEntries.add(new JRPGEntry(jrpgTitle, releaseYear, platforms, mainProtagonistGender, femaleCharactersSexualised, null));
                 }
                 loadedOffset = entries.size();
                 if(readEntriesOffset < entries.size()) {
@@ -86,6 +85,7 @@ public class WebScraper {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         } finally {
             driver.quit();
             try {
