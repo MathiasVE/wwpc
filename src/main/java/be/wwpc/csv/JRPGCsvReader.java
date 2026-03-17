@@ -34,6 +34,6 @@ public class JRPGCsvReader {
                 nextRecord[3],
                 nextRecord[4],
                 nextRecord.length > 5 ? nextRecord[5].isEmpty() ? null : Integer.valueOf(nextRecord[5]) : null,
-                nextRecord.length > 6 ? nextRecord[5].isEmpty() ? null : Integer.valueOf(nextRecord[6]) : null);
+                nextRecord.length > 6 ? nextRecord[6].isEmpty() ? null : Integer.valueOf(nextRecord[6]) : null);
     }
 }

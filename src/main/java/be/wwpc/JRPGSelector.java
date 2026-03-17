@@ -26,36 +26,41 @@ public class JRPGSelector {
 
         Map<Integer, List<JRPGEntry>> jrpgEntriesPerReleaseYear = jrpgsEntries.stream().collect(Collectors.groupingBy(JRPGEntry::releaseYear, Collectors.mapping(jrpgEntry -> jrpgEntry, Collectors.toList())));
 
-        List<List<JRPGEntry>> listStream = jrpgEntriesPerReleaseYear.entrySet()
-                .stream()
-                .sorted(Comparator.comparingInt(Map.Entry::getKey))
-                .map(integerListEntry -> integerListEntry.getValue().stream()
+//        List<List<JRPGEntry>> filteredTop3 = jrpgEntriesPerReleaseYear.entrySet()
+//                .stream()
+//                .sorted(Comparator.comparingInt(Map.Entry::getKey))
+//                .map(integerListEntry -> integerListEntry.getValue().stream()
+//                        .sorted(Comparator.comparingInt(value -> value instanceof JRPGEntry jrpgEntry ? jrpgEntry.userScore() != null ? jrpgEntry.userScore() : 0 : 0).reversed())
+//                        .filter(jrpgEntry -> jrpgEntry.userScore() != null && jrpgEntry.userScore() > 0)
+//                        .limit(3)
+//                        .toList()).toList();
+        Random r = new Random();
+
+        for (Map.Entry<Integer, List<JRPGEntry>> entry : jrpgEntriesPerReleaseYear.entrySet()) {
+            if(entry.getKey() > 0) {
+                System.out.println("YEAR " + entry.getKey());
+                List<JRPGEntry> entriesForYear = entry.getValue();
+                List<JRPGEntry> filteredTop3 = entry.getValue()
+                        .stream()
                         .sorted(Comparator.comparingInt(value -> value instanceof JRPGEntry jrpgEntry ? jrpgEntry.userScore() != null ? jrpgEntry.userScore() : 0 : 0).reversed())
                         .filter(jrpgEntry -> jrpgEntry.userScore() != null && jrpgEntry.userScore() > 0)
                         .limit(3)
-                        .toList())
-                .filter(jrpgEntries -> !jrpgEntries.isEmpty()).toList();
-        Random r = new Random();
-
-        for(List<JRPGEntry> entries : listStream) {
-            System.out.println("Year: " + entries.getFirst().releaseYear());
-            int count = 1;
-            for (JRPGEntry jrpgEntry : entries) {
-                System.out.println("  TOP " + jrpgEntry.name());
-                updateJrpgEntryInList(jrpgsEntries, createJrpgEntrySelected(jrpgEntry, count));
-                count++;
-            }
-            List<JRPGEntry> jrpgEntriesForYear = new ArrayList<>(jrpgsEntries.stream().filter(jrpgEntry -> jrpgEntry.releaseYear() == entries.getFirst().releaseYear()).toList());
-
-            for (int i = 0; i < 3 && !jrpgEntriesForYear.isEmpty(); i++) {
-                JRPGEntry jrpgEntry = jrpgEntriesForYear.get(r.nextInt(jrpgEntriesForYear.size()));
-                if (jrpgEntry.selected() == null) {
-                    System.out.println("  RAND " + jrpgEntry.name());
-                    updateJrpgEntryInList(jrpgsEntries, createJrpgEntrySelected(jrpgEntry, 4 + i));
-                } else {
-                      i--;
+                        .toList();
+                int count = 0;
+                for (JRPGEntry jrpgEntry : filteredTop3) {
+                    System.out.println("  TOP " + jrpgEntry.name());
+                    updateJrpgEntryInList(jrpgsEntries, createJrpgEntrySelected(jrpgEntry, ++count));
                 }
-                jrpgEntriesForYear.remove(jrpgEntry);
+                for (int i = 0; i < 6 - Math.min(3, filteredTop3.size()) && !entriesForYear.isEmpty(); i++) {
+                    JRPGEntry jrpgEntry = entriesForYear.get(r.nextInt(entriesForYear.size()));
+                    if (jrpgEntry.selected() == null) {
+                        System.out.println("  RAND " + jrpgEntry.name());
+                        updateJrpgEntryInList(jrpgsEntries, createJrpgEntrySelected(jrpgEntry, ++count));
+                    } else {
+                        i--;
+                    }
+                    entriesForYear.remove(jrpgEntry);
+                }
             }
         }
 
