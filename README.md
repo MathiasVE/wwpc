@@ -14,17 +14,28 @@ IntelliJ comes with java and maven build-in.
 mvn compile exec:java -Dexec.mainClass="be.wwpc.JRPGCScraper"
 ~~~
 
+### MetacriticScraper
+~~~
+mvn compile exec:java -Dexec.mainClass="be.wwpc.MetacriticScraper"
+~~~
+
+### UniqueFilter
+~~~
+mvn compile exec:java -Dexec.mainClass="be.wwpc.UniqueFilter"
+~~~
+
+### JRPGSelector
+~~~
+mvn compile exec:java -Dexec.mainClass="be.wwpc.JRPGSelector"
+~~~
+
 ### GeminiRequestor
 ~~~
 mvn compile exec:java -Dexec.mainClass="be.wwpc.GeminiRequestor"
 ~~~
 
 ## From intelliJ
-### Webscraper
-Right click the WebScraper class file and select 'run Webscraper.main()'
-
-### GeminiRequestor
-Right click the WebScraper class file and select 'run GeminiRequestor.main()'
+Right click the desired class file and select 'run <classname>.main()'
 
 ### Special environment variable
 When running the GeminiRequestor it is important to set

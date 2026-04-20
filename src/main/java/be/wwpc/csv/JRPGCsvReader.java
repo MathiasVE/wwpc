@@ -31,9 +31,10 @@ public class JRPGCsvReader {
         return new JRPGEntry(nextRecord[0],
                 Integer.parseInt(nextRecord[1]),
                 platforms,
-                nextRecord[3],
-                nextRecord[4],
-                nextRecord.length > 5 ? nextRecord[5].isEmpty() ? null : Integer.valueOf(nextRecord[5]) : null,
-                nextRecord.length > 6 ? nextRecord[6].isEmpty() ? null : Integer.valueOf(nextRecord[6]) : null);
+                nextRecord.length > 3 ? nextRecord[3].isEmpty() ? null : Integer.valueOf(nextRecord[3]) : null,
+                nextRecord.length > 4 ? nextRecord[4].isEmpty() ? null : Integer.valueOf(nextRecord[4]) : null,
+                nextRecord.length > 5 ? nextRecord[5] : null,
+                nextRecord.length > 6 ? nextRecord[6] : null
+                );
     }
 }

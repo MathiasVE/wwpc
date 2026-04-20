@@ -24,18 +24,38 @@ public class GeminiRequestor {
         }
     }
 
-    public static String getGenderMainProtagonist(String jrpgName, int year, List<String> platforms) {
+    public static String getFemaleSexualizeInfo(String jrpgName, int year, List<String> platforms) {
         if(platforms.isEmpty()) {
             return "not applicable";
         }
-        return callGemini("Is the main protagonist in " + jrpgName + " from " + year + " on " + platforms.get(0) + " male or female? answer only with \"male\", \"female\", \"player choice\" or \"not applicable\"");
+        return callGemini("Overdreven slanke taille en groot contrast in lichaamsverhoudingen en poseer houdingen die het lichaam accentueren 20%\n" +
+                "\"Anime-fysica\" en Borstanimatie 7,5%\n" +
+                "Haarstijlen die de aandacht naar het lichaam trekken of make‑up of stylisatie die sensualiteit benadrukt 20%\n" +
+                "Het \"Moe\"-gezicht vs. Volwassen Lichaam 5%\n" +
+                "De \"Shizuku\" (Natte Huid) Esthetiek 5%\n" +
+                "Kleding die veel huid toont, strak aansluitende of doorschijnende kleding 20%\n" +
+                "Onpraktische harnassen of vechtkledij 7,5%\n" +
+                "De \"Zettai Ryōiki\" (Absolute Zone) 5%\n" +
+                "De \"Detached Sleeves\" (Losse Mouwen) 5%\n" +
+                "Focus op \"Garter Belts\" en Dij-accessoires 5%\n\n" +
+                "Gegeven deze percentages volgens prioriteit, wat is de sexualisatie van vrouwen in " + jrpgName + " van " + year + " op " + platforms.get(0) + ". Antwoord met een uiteenzetting van de percentages en wijs een concreet percentage toe.");
     }
 
-    public static String getFemaleCharactersSexualised(String jrpgName, int year, List<String> platforms) {
+    public static String getMaleSexualizeInfo(String jrpgName, int year, List<String> platforms) {
         if(platforms.isEmpty()) {
             return "not applicable";
         }
-        return callGemini("Are the female characters sexualised in " + jrpgName + " from " + year + " on " + platforms.get(0) + "? Answer only with \"yes\", \"no\" or \"unclear\". Don't provide an explanation.");
+        return callGemini("perfect atletische lichamen, perfect proportionele lichaamsbouw of Slanke Spierbouw 20%\n" +
+                "Androgyn of bishōnen‑geïnspireerde gezichten 10%\n" +
+                "Verzorgde, opvallende kapsels 7,5%\n" +
+                "De \"Melancholische Blik\" 5%\n" +
+                "Minimale of strak aansluitende kleding 20%\n" +
+                "Accessoires die sensualiteit suggereren, overdaad aan Bandjes en Ritsen 7,5%\n" +
+                "Nonchalante “cool” poses 5%\n" +
+                "Tatoeages of littekens als esthetiek 12,5%\n" +
+                "Handschoenen en Hand-fetisjisme 7,5%\n" +
+                "De \"Capes\" en \"Long Coats\" zonder Shirt 5%\n\n" +
+                "Gegeven deze percentages volgens prioriteit, wat is de sexualisatie van mannen in " + jrpgName + " van " + year + " op " + platforms.get(0) + ". Antwoord met een uiteenzetting van de percentages en wijs een concreet percentage toe.");
     }
 
     static void main() throws IOException {
@@ -50,43 +70,38 @@ public class GeminiRequestor {
             int callCount = 0;
             for(int i=0; i<jrpgsEntries.size(); i++) {
                 JRPGEntry entry = jrpgsEntries.get(i);
-                boolean calledGemini = false;
-                if(entry.mainProtagonistGender().isEmpty()) {
-                    System.out.println("Get gender main protagonist: " + i);
-                    jrpgsEntries.set(i, new JRPGEntry(
-                            entry.name(),
-                            entry.releaseYear(),
-                            entry.platforms(),
-                            getGenderMainProtagonist(entry.name(), entry.releaseYear(), entry.platforms()),
-                            entry.femaleCharactersSexualised(),
-                            entry.userScore(),
-                            entry.selected()));
-                    calledGemini = true;
-                }
-                entry = jrpgsEntries.get(i);
-                if(entry.femaleCharactersSexualised().isEmpty()) {
-                    System.out.println("Get Female Characters Sexualised: " + i);
-                    String femaleCharactersSexualised = getFemaleCharactersSexualised(entry.name(), entry.releaseYear(), entry.platforms());
-                    if(!(femaleCharactersSexualised.equalsIgnoreCase("yes") ||
-                            femaleCharactersSexualised.equalsIgnoreCase("no") ||
-                            femaleCharactersSexualised.equalsIgnoreCase("unclear"))) {
-                        System.out.println(entry.name() + ": " + femaleCharactersSexualised);
-                        femaleCharactersSexualised = "unclear";
+                if(entry.selected() != null && entry.selected() > 0) {
+                    boolean calledGemini = false;
+                    if (entry.femaleSexualizedInfo().isEmpty()) {
+                        System.out.println("Get female sexualisation info: " + i);
+                        jrpgsEntries.set(i, new JRPGEntry(
+                                entry.name(),
+                                entry.releaseYear(),
+                                entry.platforms(),
+                                entry.userScore(),
+                                entry.selected(),
+                                getFemaleSexualizeInfo(entry.name(), entry.releaseYear(), entry.platforms()),
+                                entry.maleSexualizedInfo()));
+                        calledGemini = true;
                     }
-                    jrpgsEntries.set(i, new JRPGEntry(
-                            entry.name(),
-                            entry.releaseYear(),
-                            entry.platforms(),
-                            entry.mainProtagonistGender(),
-                            femaleCharactersSexualised,
-                            entry.userScore(),
-                            entry.selected()));
-                    calledGemini = true;
-                }
-                if(calledGemini) {
-                    callCount++;
-                    if(callCount % 100 == 0) {
-                        JRPGCsvWriter.write(path, jrpgsEntries);
+                    entry = jrpgsEntries.get(i);
+                    if (entry.maleSexualizedInfo().isEmpty()) {
+                        System.out.println("Get male sexualisation info: " + i);
+                        jrpgsEntries.set(i, new JRPGEntry(
+                                entry.name(),
+                                entry.releaseYear(),
+                                entry.platforms(),
+                                entry.userScore(),
+                                entry.selected(),
+                                entry.femaleSexualizedInfo(),
+                                getMaleSexualizeInfo(entry.name(), entry.releaseYear(), entry.platforms())));
+                        calledGemini = true;
+                    }
+                    if (calledGemini) {
+                        callCount++;
+                        if (callCount % 20 == 0) {
+                            JRPGCsvWriter.write(path, jrpgsEntries);
+                        }
                     }
                 }
             }

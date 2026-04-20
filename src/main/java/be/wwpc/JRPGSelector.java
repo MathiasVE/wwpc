@@ -26,14 +26,6 @@ public class JRPGSelector {
 
         Map<Integer, List<JRPGEntry>> jrpgEntriesPerReleaseYear = jrpgsEntries.stream().collect(Collectors.groupingBy(JRPGEntry::releaseYear, Collectors.mapping(jrpgEntry -> jrpgEntry, Collectors.toList())));
 
-//        List<List<JRPGEntry>> filteredTop3 = jrpgEntriesPerReleaseYear.entrySet()
-//                .stream()
-//                .sorted(Comparator.comparingInt(Map.Entry::getKey))
-//                .map(integerListEntry -> integerListEntry.getValue().stream()
-//                        .sorted(Comparator.comparingInt(value -> value instanceof JRPGEntry jrpgEntry ? jrpgEntry.userScore() != null ? jrpgEntry.userScore() : 0 : 0).reversed())
-//                        .filter(jrpgEntry -> jrpgEntry.userScore() != null && jrpgEntry.userScore() > 0)
-//                        .limit(3)
-//                        .toList()).toList();
         Random r = new Random();
 
         for (Map.Entry<Integer, List<JRPGEntry>> entry : jrpgEntriesPerReleaseYear.entrySet()) {
@@ -86,10 +78,10 @@ public class JRPGSelector {
                 jrpgEntry.name(),
                 jrpgEntry.releaseYear(),
                 jrpgEntry.platforms(),
-                jrpgEntry.mainProtagonistGender(),
-                jrpgEntry.femaleCharactersSexualised(),
                 jrpgEntry.userScore(),
-                selected
+                selected,
+                jrpgEntry.femaleSexualizedInfo(),
+                jrpgEntry.maleSexualizedInfo()
                 );
     }
 }
