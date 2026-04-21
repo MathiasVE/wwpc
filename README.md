@@ -2,7 +2,7 @@
 1. Install java JDK 25
 2. Install maven
 
-Make sure the new java JDK is in the PATH environment variable
+Make sure the java JDK and maven are in the PATH environment variable
 
 Alternatively you can install intelliJ and import the project there. 
 IntelliJ comes with java and maven build-in.
