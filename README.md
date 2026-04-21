@@ -35,7 +35,7 @@ mvn compile exec:java -Dexec.mainClass="be.wwpc.GeminiRequestor"
 ~~~
 
 ## From intelliJ
-Right click the desired class file and select 'run <classname>.main()'
+Right click the desired class file and select 'run \<classname\>.main()'
 
 ### Special environment variable
 When running the GeminiRequestor it is important to set
